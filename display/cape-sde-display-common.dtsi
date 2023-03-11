@@ -17,21 +17,34 @@
 #include "dsi-panel-sim-dualmipi-video.dtsi"
 #include "dsi-panel-sim-dsc-10bit-cmd.dtsi"
 #include "dsi-panel-sim-dsc375-cmd.dtsi"
-//#ifdef OPLUS_BUG_STABILITY
-#include "dsi-panel-oplus21606-nt37701b-1080-2412-dsc-cmd-udc.dtsi"
-#include "dsi-panel-oplus21605-nt37701a-1080-2412-dsc-cmd.dtsi"
-#include "dsi_panel_oplus_boe_rm692e5_1080_2412_dsc_cmd.dtsi"
-#include "dsi-panel-oplus-ovaltine_boe_nt37705_1080_2412_dsc_cmd.dtsi"
-//#endif
 #include "dsi-panel-sim-fhd-plus-120hz-video-cphy.dtsi"
 
 #include "cape-sde-display-pinctrl.dtsi"
 
-//#ifdef OPLUS_BUG_STABILITY
-&L6C {
-	qcom,init-voltage = <1800000>;
+//#ifdef OPLUS_FEATURE_DISPLAY
+#include "dsi-panel-oplus-samsung-s6e3-1792-1920-dsc-cmd.dtsi"
+#include "dsi-panel-samsung_ams662zs01-1080-2400-dsc-cmd.dtsi"
+#include "dsi-panel-oplus-samsung-s6e3-1792-1920-dsc-vid.dtsi"
+#include "dsi-panel-oplus-samsung-s6e3xa2-1792-1920-dsc-cmd.dtsi"
+#include "dsi-panel-oplus-samsung-s6e3fac-1080-2120-dsc-cmd.dtsi"
+#include "dsi-panel-oplus-samsung-s6e3fac-1080-2120-dsc-cmd-wdte.dtsi"
+
+&soc {
+	oplus_display_dev: oplus,dsi-display-dev {
+		oplus,dsi-panel-primary = <
+			&dsi_oplus_samsung_s6e3_1792_1920_dsc_cmd
+			&dsi_samsung_ams662zs01_1080_2400_dsc_cmd
+			&dsi_oplus_samsung_s6e3_1792_1920_dsc_vid
+			&dsi_oplus_samsung_s6e3xa2_1792_1920_dsc_cmd
+		>;
+		oplus,dsi-panel-secondary = <
+			&dsi_oplus_samsung_s6e3fac_1080_2120_dsc_cmd
+			&dsi_oplus_samsung_s6e3fac_1080_2120_dsc_cmd_wdte
+		>;
+		oplus,dsi-panel-extended = <>;
+	};
 };
-//#endif
+//#endif /* OPLUS_FEATURE_DISPLAY */
 
 &soc {
 	dsi_panel_pwr_supply_sim: dsi_panel_pwr_supply_sim {
@@ -49,8 +62,8 @@
 		};
 	};
 
-//#ifdef OPLUS_BUG_STABILITY
-	dsi_panel_oplus_jennie_pwr_supply: dsi_panel_oplus_jennie_pwr_supply {
+//#ifdef OPLUS_FEATURE_DISPLAY
+	dsi_panel_oplus_optimization_pwr_supply: dsi_panel_oplus_optimization_pwr_supply {
 		#address-cells = <1>;
 		#size-cells = <0>;
 
@@ -71,11 +84,10 @@
 			qcom,supply-max-voltage = <3000000>;
 			qcom,supply-enable-load = <2000>;
 			qcom,supply-disable-load = <0>;
-			qcom,supply-post-on-sleep = <10>;
+			qcom,supply-post-on-sleep = <0>;
 		};
 	};
-
-	dsi_panel_oplus_optimization_pwr_supply: dsi_panel_oplus_optimization_pwr_supply {
+	dsi_panel_oplus_pwr_supply_sec: dsi_panel_oplus_pwr_supply_sec {
 		#address-cells = <1>;
 		#size-cells = <0>;
 
@@ -91,34 +103,15 @@
 
 		qcom,panel-supply-entry@1 {
 			reg = <1>;
-			qcom,supply-name = "vci";
-			qcom,supply-min-voltage = <3100000>;
-			qcom,supply-max-voltage = <3100000>;
-			qcom,supply-enable-load = <2000>;
-			qcom,supply-disable-load = <0>;
-			qcom,supply-post-on-sleep = <0>;
-		};
-
-		qcom,panel-supply-entry@2 {
-			reg = <2>;
-			qcom,supply-name = "lab";
-			qcom,supply-min-voltage = <4600000>;
-			qcom,supply-max-voltage = <6000000>;
-			qcom,supply-enable-load = <0>;
-			qcom,supply-disable-load = <0>;
-		};
-
-		qcom,panel-supply-entry@3 {
-			reg = <3>;
-			qcom,supply-name = "ibb";
-			qcom,supply-min-voltage = <4600000>;
-			qcom,supply-max-voltage = <6000000>;
-			qcom,supply-enable-load = <0>;
-			qcom,supply-disable-load = <0>;
+			qcom,supply-name = "vci_sec";
+			qcom,supply-min-voltage = <3000000>;
+			qcom,supply-max-voltage = <3000000>;
+			qcom,supply-enable-load = <200000>;
+			qcom,supply-disable-load = <80>;
 			qcom,supply-post-on-sleep = <0>;
 		};
 	};
-//#endif
+//#endif /* OPLUS_FEATURE_DISPLAY */
 	dsi_panel_pwr_supply_avdd: dsi_panel_pwr_supply_avdd {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -372,6 +365,9 @@
 	qcom,qsync-enable;
 	qcom,mdss-dsi-qsync-min-refresh-rate = <60>;
 
+	qcom,dsi-dyn-clk-enable;
+	qcom,dsi-dyn-clk-type = "constant-fps-adjust-vfp";
+
 	qcom,esd-check-enabled;
 	qcom,mdss-dsi-panel-status-check-mode = "reg_read";
 	qcom,mdss-dsi-panel-status-command = [06 01 00 01 00 00 01 0a];
@@ -385,6 +381,7 @@
 				19 06 02 04 00 00 00];
 			qcom,display-topology = <2 2 1>;
 			qcom,default-topology-index = <0>;
+			qcom,dsi-dyn-clk-list = <525571200 521191440 523381320>;
 		};
 	};
 };

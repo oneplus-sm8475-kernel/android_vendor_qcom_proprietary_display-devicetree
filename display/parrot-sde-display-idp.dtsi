@@ -77,9 +77,13 @@
 };
 
 &sde_dsi {
+	vddio-supply = <&display_panel_vddio>;
+	avdd-supply = <&display_panel_avdd>;
+
 	pinctrl-names = "panel_active", "panel_suspend", "pwm_pin";
-	pinctrl-2 = <&lcd_backlight_ctrl_default>;
-	qcom,dsi-default-panel = <&dsi_nt36672e_dsc_fhd_plus_60hz_video>;
+	pinctrl-2 = <&lcd_backlight_pwm_default>;
+
+	qcom,dsi-default-panel = <&dsi_nt36672e_fhd_plus_120_video>;
 };
 
 &qupv3_se9_i2c {

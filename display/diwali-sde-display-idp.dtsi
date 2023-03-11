@@ -194,6 +194,6 @@
 	focaltech@38 {
 		panel = <&dsi_r66451_amoled_60hz_video
 			&dsi_r66451_amoled_60hz_cmd
-                        &dsi_oplus21125samsung_ams662zs02_1080_2400_dsc_cmd>;
+			&dsi_oplus21125samsung_ams662zs02_1080_2400_dsc_cmd>;
 	};
 };

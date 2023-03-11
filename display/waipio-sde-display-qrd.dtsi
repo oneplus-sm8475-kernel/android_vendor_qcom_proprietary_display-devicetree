@@ -125,12 +125,6 @@
 	qcom,init-voltage = <1800000>; /* panel vddio */
 };
 
-//#ifdef OPLUS_BUG_STABILITY
-&L10C {
-	qcom,init-voltage = <1200000>; /* panel vddio */
-};
-//#endif
-
 &sde_dsi {
 	extvdd-supply = <&L1D>;
 	qcom,dsi-default-panel = <&dsi_r66451_amoled_144hz_cmd_cphy>;

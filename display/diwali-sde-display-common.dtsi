@@ -24,9 +24,21 @@
 #include "dsi-panel-sharp-qsync-wqhd-cmd.dtsi"
 #include "dsi-panel-sharp-qsync-wqhd-video.dtsi"
 #include "dsi-panel-r66451-dsc-fhd-plus-60hz-cmd.dtsi"
+//#ifdef OPLUS_FEATURE_DISPLAY
 #include "dsi-panel-oplus21125samsung-ams662zs02-1080-2400-120hz-dsc-cmd.dtsi"
+//#endif /* OPLUS_FEATURE_DISPLAY */
 
 #include "diwali-sde-display-pinctrl.dtsi"
+
+//#ifdef OPLUS_FEATURE_DISPLAY
+&soc {
+	oplus_display_dev: oplus,dsi-display-dev {
+		oplus,dsi-panel-primary = <>;
+		oplus,dsi-panel-secondary = <>;
+		oplus,dsi-panel-extended = <>;
+	};
+};
+//#endif /* OPLUS_FEATURE_DISPLAY */
 
 &soc {
 	dsi_panel_pwr_supply_sim: dsi_panel_pwr_supply_sim {
@@ -156,6 +168,7 @@
 		};
 	};
 
+//#ifdef OPLUS_FEATURE_DISPLAY
 	dsi_panel_oplus_pwr_supply: dsi_panel_oplus_pwr_supply {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -180,6 +193,7 @@
 			qcom,supply-post-on-sleep = <0>;
 		};
 	};
+//#endif /* OPLUS_FEATURE_DISPLAY */
 
 	sde_dsi: qcom,dsi-display-primary {
 		compatible = "qcom,dsi-display";
@@ -196,7 +210,7 @@
 		qcom,panel-te-source = <0>;
 
 		qcom,mdp = <&mdss_mdp>;
-		qcom,dsi-default-panel = <&dsi_nt36672e_fhd_plus_120_video>;
+		qcom,dsi-default-panel = <&dsi_nt36672e_dsc_fhd_plus_60hz_video>;
 		qcom,demura-panel-id = <0x0122e700 0x000000b0>;
 	};
 
@@ -218,15 +232,6 @@
 		qcom,demura-panel-id = <0x0 0x0>;
 	};
 };
-
-
-//#ifdef OPLUS_FEATURE_UFF_FINGERPRINT
-&soc {
-        fingerprint_dev {
-                panel = <&dsi_oplus21125samsung_ams662zs02_1080_2400_dsc_cmd>;
-        };
-};
-//#endif /*OPLUS_FEATURE_UFF_FINGERPRINT*/
 
 /* PHY TIMINGS REVISION YL with reduced margins*/
 &dsi_r66451_amoled_video_cphy {
@@ -906,12 +911,6 @@
 	};
 };
 
-&soc {
-		sensor_dev {
-				oplus,display_panel = <&dsi_oplus21125samsung_ams662zs02_1080_2400_dsc_cmd>;
-		};
-};
-
 &dsi_sharp_qsync_wqhd_video {
 	qcom,dsi-select-clocks = "pll_byte_clk0", "pll_dsi_clk0";
 
@@ -931,11 +930,5 @@
 			qcom,display-topology = <2 2 2>;
 			qcom,default-topology-index = <0>;
 		};
-	};
-};
-
-&soc {
-	oplus,comm {
-		oplus,display_panel = <&dsi_oplus21125samsung_ams662zs02_1080_2400_dsc_cmd>;
 	};
 };

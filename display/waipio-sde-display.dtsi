@@ -1,8 +1,5 @@
 #include "waipio-sde-display-common.dtsi"
 #include <dt-bindings/clock/qcom,dispcc-waipio.h>
-/* #if defined(CONFIG_PXLW_IRIS) */
-#include <dt-bindings/clock/qcom,rpmh.h>
-/* #endif */
 
 &soc {
 	display_panel_avdd: display_gpio_regulator@1 {
@@ -70,20 +67,10 @@
 			  * MDP clock nodes, no actual vote shall be added and this
 			  * change is done just to satisfy sync state requirements.
 			  */
-			 <&clock_dispcc DISP_CC_MDSS_MDP_CLK>,
-			 /* #if defined(CONFIG_PXLW_IRIS) */
-			 <&clock_rpmh RPMH_LN_BB_CLK3>;
-			 /* #endif */
+			 <&clock_dispcc DISP_CC_MDSS_MDP_CLK>;
 	clock-names = "pll_byte_clk0", "pll_dsi_clk0",
 			"pll_byte_clk1", "pll_dsi_clk1",
 			"mdp_core_clk";
-	/* #if defined(CONFIG_PXLW_IRIS) */
-	//"pw_bb_clk2";
-	/* #endif */
-
-	//#ifdef OPLUS_BUG_STABILITY
-	vddr-supply = <&L10C>;
-	//#endif
 
 	vddio-supply = <&L12C>;
 	vci-supply = <&L13C>;
@@ -181,6 +168,14 @@
 	qcom,ulps-enabled;
 };
 
+&dsi_vtdr6130_amoled_cmd {
+	qcom,ulps-enabled;
+};
+
+&dsi_vtdr6130_amoled_qsync_144hz_cmd {
+	qcom,ulps-enabled;
+};
+
 &dsi_sharp_qsync_wqhd_cmd {
 	qcom,ulps-enabled;
 	qcom,mdss-dsi-display-timings {
@@ -259,4 +254,3 @@
 		};
 	};
 };
-
